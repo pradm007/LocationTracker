@@ -95,7 +95,7 @@ public class GPSTrackerService extends Service implements LocationListener {
     }
 
     private void insertToDb(double latitude, double logitude) {
-        DatableHandler datableHandler =  new DatableHandler(mContext, "LOCATION_COORDINATES", "LOCATION_COORDINATES");
+        DatableHandler datableHandler =  new DatableHandler(mContext, "LOCATION_COORDINATES");
 
         datableHandler.addLocation(new LocationTable(latitude, logitude, System.currentTimeMillis()));
     }
