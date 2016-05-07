@@ -17,6 +17,9 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.widget.Toast;
 
+import mm.locationtracker.database.helper.DatableHandler;
+import mm.locationtracker.database.table.LocationTable;
+
 import static android.location.LocationManager.*;
 
 /**
@@ -66,6 +69,8 @@ public class GPSTrackerService extends Service implements LocationListener {
         if (latitude != -1.0 && longitude != -1.0) {
             String locationStr = "On LocationChanged Current location is \nLatitude : " + latitude + "\nLongitude : " + longitude;
 
+            insertToDb(latitude, longitude);
+
             Toast.makeText(mContext, locationStr, Toast.LENGTH_SHORT).show();
         }
     }
@@ -87,6 +92,12 @@ public class GPSTrackerService extends Service implements LocationListener {
 
     public boolean canGetLocation() {
         return canGetLocation;
+    }
+
+    private void insertToDb(double latitude, double logitude) {
+        DatableHandler datableHandler =  new DatableHandler(mContext, "LOCATION_COORDINATES", "LOCATION_COORDINATES");
+
+        datableHandler.addLocation(new LocationTable(latitude, logitude, System.currentTimeMillis()));
     }
 
     /*
