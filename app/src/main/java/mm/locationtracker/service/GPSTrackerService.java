@@ -15,6 +15,7 @@ import android.os.IBinder;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.widget.Toast;
 
 import static android.location.LocationManager.*;
 
@@ -38,10 +39,10 @@ public class GPSTrackerService extends Service implements LocationListener {
     double longitude; // longitude
 
     // The minimum distance to change Updates in meters
-    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10; // 10 meters
+    private static final float MIN_DISTANCE_CHANGE_FOR_UPDATES = 0.01f; // 10 meters
 
     // The minimum time between updates in milliseconds
-    private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1; // 1 minute
+    private static final long MIN_TIME_BW_UPDATES = 1000 * 2; // 1 minute
 
     // Declaring a Location Manager
     protected LocationManager locationManager;
@@ -59,7 +60,14 @@ public class GPSTrackerService extends Service implements LocationListener {
 
     @Override
     public void onLocationChanged(Location location) {
+        double latitude = getLatitude();
+        double longitude = getLongitude();
 
+        if (latitude != -1.0 && longitude != -1.0) {
+            String locationStr = "On LocationChanged Current location is \nLatitude : " + latitude + "\nLongitude : " + longitude;
+
+            Toast.makeText(mContext, locationStr, Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

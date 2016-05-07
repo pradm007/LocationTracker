@@ -18,6 +18,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        gpsTrackerService = new GPSTrackerService(getApplicationContext());
+
         Button locationButton = (Button) findViewById(R.id.location_button);
         locationButton.setOnClickListener(locationButtonOnClick);
 
@@ -26,8 +28,6 @@ public class MainActivity extends AppCompatActivity {
     View.OnClickListener locationButtonOnClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-
-            gpsTrackerService = new GPSTrackerService(getApplicationContext());
 
             if (gpsTrackerService.canGetLocation()) {
                 double latitude = gpsTrackerService.getLatitude();
