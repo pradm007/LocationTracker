@@ -43,10 +43,10 @@ public class GPSTrackerService extends Service implements LocationListener {
     double longitude; // longitude
 
     // The minimum distance to change Updates in meters
-    private static final float MIN_DISTANCE_CHANGE_FOR_UPDATES = 0.01f; // 10 meters
+    private static float MIN_DISTANCE_CHANGE_FOR_UPDATES = 0.01f; // 10 meters
 
     // The minimum time between updates in milliseconds
-    private static final long MIN_TIME_BW_UPDATES = 1000 * 2; // 1 minute
+    private static long MIN_TIME_BW_UPDATES = 1000 * 2; // 1 minute
 
     // Declaring a Location Manager
     protected LocationManager locationManager;
@@ -213,4 +213,25 @@ public class GPSTrackerService extends Service implements LocationListener {
         alertDialog.show();
     }
 
+    public void setMinDistanceChangeForUpdates(Context context, String minDistanceChangeForUpdates) {
+        try {
+            float minDistanceChangeForUpdatesFloat = Float.parseFloat(minDistanceChangeForUpdates);
+            MIN_DISTANCE_CHANGE_FOR_UPDATES = minDistanceChangeForUpdatesFloat;
+            getLocation();
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            CustomToast.showToast(context, "Invalid input");
+        }
+    }
+
+    public void setMinTimeBwUpdates(Context context, String minTimeBwUpdates) {
+        try {
+            long minTimeBwUpdatesLong = Long.parseLong(minTimeBwUpdates);
+            MIN_TIME_BW_UPDATES = minTimeBwUpdatesLong;
+            getLocation();
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            CustomToast.showToast(context, "Invalid input");
+        }
+    }
 }

@@ -36,6 +36,11 @@ public class MainActivity extends AppCompatActivity {
     Button submitPin;
     Button sendMail;
 
+    EditText minDistEdtV;
+    Button submitMinDisEdtV;
+    EditText minTimeEdtV;
+    Button submitMinTimeEdtV;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +63,14 @@ public class MainActivity extends AppCompatActivity {
         sendMail = (Button) findViewById(R.id.sendMail);
         sendMail.setOnClickListener(sendMailClickListener);
 
+        minDistEdtV = (EditText) findViewById(R.id.minDistEdtV);
+        submitMinDisEdtV = (Button) findViewById(R.id.submitMinDisEdtV);
+        submitMinDisEdtV.setOnClickListener(submitMinDisEdtVClickListner);
+
+        minTimeEdtV = (EditText) findViewById(R.id.minTimeEdtV);
+        submitMinTimeEdtV = (Button) findViewById(R.id.submitMinTimeEdtV);
+        submitMinTimeEdtV.setOnClickListener(submitMinTimeEdtVClickListner);
+
         Intent trackingNotifierService = new Intent(getApplicationContext(), TrackingNotifierService.class);
         startService(trackingNotifierService);
 
@@ -75,6 +88,20 @@ public class MainActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             SendMailInvoker sendMailInvoker = new SendMailInvoker(MainActivity.this);
             sendMailInvoker.sendMail();
+        }
+    };
+
+    View.OnClickListener submitMinDisEdtVClickListner = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            gpsTrackerService.setMinDistanceChangeForUpdates(getApplicationContext(), minDistEdtV.getText().toString());
+        }
+    };
+
+    View.OnClickListener submitMinTimeEdtVClickListner = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            gpsTrackerService.setMinTimeBwUpdates(getApplicationContext(), minTimeEdtV.getText().toString());
         }
     };
 

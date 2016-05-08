@@ -14,7 +14,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:text="@string/get_current_location"
-        android:visibility="visible"/>
+        android:visibility="visible" />
 
     <Button
         android:id="@+id/location_dump_kml_file"
@@ -23,15 +23,80 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:text="@string/create_dump_file"
-        android:visibility="visible"/>
-
+        android:visibility="visible" />
 
     <Button
         android:id="@+id/sendMail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Send Mail"
-        android:layout_centerInParent="true"/>
+        android:layout_centerInParent="true"
+        android:text="Send Mail" />
+
+    <RelativeLayout
+        android:id="@+id/valueContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/sendMail"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp">
+
+        <LinearLayout
+            android:id="@+id/minDisContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <EditText
+                android:id="@+id/minDistEdtV"
+                android:layout_width="230dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:hint="Minimum distance for update"
+                android:inputType="number"
+                android:textColor="@android:color/holo_blue_dark"
+                android:textColorHint="@android:color/darker_gray"
+                android:textSize="14sp"
+                android:textStyle="normal" />
+
+            <Button
+                android:id="@+id/submitMinDisEdtV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:text="Go" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/minTimeContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/minDisContainer"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <EditText
+                android:id="@+id/minTimeEdtV"
+                android:layout_width="230dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:hint="Minimum time interval(in mins)"
+                android:inputType="number"
+                android:textColor="@android:color/holo_blue_dark"
+                android:textColorHint="@android:color/darker_gray"
+                android:textSize="14sp"
+                android:textStyle="normal" />
+
+            <Button
+                android:id="@+id/submitMinTimeEdtV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:text="Go" />
+        </LinearLayout>
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/pinContainer"
@@ -54,7 +119,7 @@
             android:textColor="@android:color/holo_blue_dark"
             android:textColorHint="@android:color/darker_gray"
             android:textSize="14sp"
-            android:textStyle="normal"/>
+            android:textStyle="normal" />
 
 
         <Button
