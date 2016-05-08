@@ -10,13 +10,20 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
 
 import mm.locationtracker.R;
 import mm.locationtracker.database.helper.DatableHandler;
 import mm.locationtracker.database.table.LocationTable;
+import mm.locationtracker.mailer.GmailSMTPMailer;
 import mm.locationtracker.service.GPSTrackerService;
 import mm.locationtracker.utility.ApplicationState;
+import mm.locationtracker.utility.CustomDate;
 import mm.locationtracker.utility.CustomToast;
 import mm.locationtracker.utility.KMLFileCreator;
 
@@ -30,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     LinearLayout pinContainer;
     EditText pinEditTextView;
     Button submitPin;
+    Button sendMail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         gpsTrackerService = new GPSTrackerService(getApplicationContext());
-        ApplicationState.setAccessLevel(ApplicationState.LEAST_ACCESS);
+        ApplicationState.setAccessLevel(ApplicationState.FULL_ACCESS);
 
         locationButton = (Button) findViewById(R.id.location_button);
         locationButton.setOnClickListener(locationButtonOnClick);
@@ -48,8 +56,10 @@ public class MainActivity extends AppCompatActivity {
         pinContainer = (LinearLayout) findViewById(R.id.pinContainer);
         pinEditTextView = (EditText) findViewById(R.id.pinTextView);
         submitPin = (Button) findViewById(R.id.submitPin);
-
         submitPin.setOnClickListener(submitPinClickListener);
+
+        sendMail = (Button) findViewById(R.id.sendMail);
+        sendMail.setOnClickListener(sendMailClickListener);
     }
 
     View.OnClickListener locationButtonOnClick = new View.OnClickListener() {
@@ -86,6 +96,22 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     CustomToast.showToast(getApplicationContext(), "File creation failed");
                 }
+            }
+        }
+    };
+
+    View.OnClickListener sendMailClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            GmailSMTPMailer gmailSMTPMailer = new GmailSMTPMailer("mmdevelopers9092@gmail.com", "whiteboard", getApplicationContext());
+            Session session = gmailSMTPMailer.createSessionObject();
+            try {
+                Message message = gmailSMTPMailer.createMessage("mmdevelopers9092@gmail.com", "Test 1 at " + CustomDate.getCurrentFormattedDate(), "Yo wassup", session);
+                gmailSMTPMailer.sendTheMail(message, MainActivity.this);
+            } catch (MessagingException e) {
+                e.printStackTrace();
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
             }
         }
     };
