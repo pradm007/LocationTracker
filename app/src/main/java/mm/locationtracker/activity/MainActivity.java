@@ -1,6 +1,9 @@
 package mm.locationtracker.activity;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
@@ -22,7 +25,9 @@ import mm.locationtracker.database.helper.DatableHandler;
 import mm.locationtracker.database.table.LocationTable;
 import mm.locationtracker.mailer.GmailSMTPMailer;
 import mm.locationtracker.service.GPSTrackerService;
+import mm.locationtracker.service.TrackingNotifierService;
 import mm.locationtracker.utility.ApplicationState;
+import mm.locationtracker.utility.CustomConstants;
 import mm.locationtracker.utility.CustomDate;
 import mm.locationtracker.utility.CustomToast;
 import mm.locationtracker.utility.KMLFileCreator;
@@ -60,7 +65,25 @@ public class MainActivity extends AppCompatActivity {
 
         sendMail = (Button) findViewById(R.id.sendMail);
         sendMail.setOnClickListener(sendMailClickListener);
+
+        Intent trackingNotifierService = new Intent(getApplicationContext(), TrackingNotifierService.class);
+        startService(trackingNotifierService);
+
+        registerReceiver(broadcastReceiver, new IntentFilter(CustomConstants.SEND_TRACKING_MAIL));
     }
+
+    @Override
+    protected void onDestroy() {
+        unregisterReceiver(broadcastReceiver);
+        super.onDestroy();
+    }
+
+    BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+          sendMail();
+        }
+    };
 
     View.OnClickListener locationButtonOnClick = new View.OnClickListener() {
         @Override
@@ -110,21 +133,25 @@ public class MainActivity extends AppCompatActivity {
     View.OnClickListener sendMailClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            String filePath = dumpTheFile();
-            if (!filePath.isEmpty()) {
-                GmailSMTPMailer gmailSMTPMailer = new GmailSMTPMailer("mmdevelopers9092@gmail.com", "whiteboard", getApplicationContext());
-                Session session = gmailSMTPMailer.createSessionObject();
-                try {
-                    Message message = gmailSMTPMailer.createMessage("mmdevelopers9092@gmail.com", "Test 1 at " + CustomDate.getCurrentFormattedDate(), "Yo wassup", filePath, session);
-                    gmailSMTPMailer.sendTheMail(message, MainActivity.this);
-                } catch (MessagingException e) {
-                    e.printStackTrace();
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                }
-            }
+            sendMail();
         }
     };
+
+    private void sendMail() {
+        String filePath = dumpTheFile();
+        if (!filePath.isEmpty()) {
+            GmailSMTPMailer gmailSMTPMailer = new GmailSMTPMailer("mmdevelopers9092@gmail.com", "whiteboard", getApplicationContext());
+            Session session = gmailSMTPMailer.createSessionObject();
+            try {
+                Message message = gmailSMTPMailer.createMessage("mmdevelopers9092@gmail.com", "Test 1 at " + CustomDate.getCurrentFormattedDate(), "Yo wassup", filePath, session);
+                gmailSMTPMailer.sendTheMail(message, MainActivity.this);
+            } catch (MessagingException e) {
+                e.printStackTrace();
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     View.OnClickListener submitPinClickListener = new View.OnClickListener() {
         @Override

@@ -8,6 +8,10 @@ import java.util.Calendar;
  */
 public class CustomDate {
 
+    public static long SEC = 1000;
+    public static long MINS = 1000 * 60;
+    public static long HOURS = 1000 * 60 * 60;
+
     public static String getCurrentFormattedDate() {
         Calendar c = Calendar.getInstance();
 
