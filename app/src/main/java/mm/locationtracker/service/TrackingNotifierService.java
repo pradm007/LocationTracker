@@ -26,8 +26,9 @@ public class TrackingNotifierService extends Service {
     Runnable mHandlerTask =  new Runnable() {
         @Override
         public void run() {
-            long currentTimestampInSeconds = System.currentTimeMillis();
-            if (currentTimestampInSeconds % CustomDate.MINS == 0) {
+            long currentTimestampInSeconds = System.currentTimeMillis() / 1000;
+            if (currentTimestampInSeconds % CustomDate.MINS_SINGULAR == 0 ||
+                    currentTimestampInSeconds % CustomDate.MINS_SINGULAR == 30) {
                 sendMail();
             }
 

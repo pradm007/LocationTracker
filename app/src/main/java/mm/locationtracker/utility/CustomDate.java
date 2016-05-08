@@ -11,6 +11,8 @@ public class CustomDate {
     public static long SEC = 1000;
     public static long MINS = 1000 * 60;
     public static long HOURS = 1000 * 60 * 60;
+    public static long MINS_SINGULAR = 60;
+    public static long HOURS_SINGULAR = 60 * 60;
 
     public static String getCurrentFormattedDate() {
         Calendar c = Calendar.getInstance();

@@ -29,10 +29,14 @@ public class DumpKMLFileInvoker {
             filePath = KMLFileCreator.createKMLFile(locationTableArrayList);
             boolean status = !filePath.isEmpty();
 
-            if (status) {
-                CustomToast.showToast(context, "File creation successfull");
-            } else {
-                CustomToast.showToast(context, "File creation failed");
+            try {
+                if (status) {
+                    CustomToast.showToast(context, "File creation successfull");
+                } else {
+                    CustomToast.showToast(context, "File creation failed");
+                }
+            } catch (RuntimeException e) {
+                e.printStackTrace();
             }
         }
         return filePath;
