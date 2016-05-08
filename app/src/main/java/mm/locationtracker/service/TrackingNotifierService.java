@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 
 import mm.locationtracker.utility.CustomConstants;
 import mm.locationtracker.utility.CustomDate;
+import mm.locationtracker.utility.SendMailInvoker;
 
 /**
  * Created by Pradeep Mahato 007 on 08-May-16.
@@ -18,16 +19,16 @@ public class TrackingNotifierService extends Service {
 
     @Override
         public int onStartCommand(Intent intent, int flags, int startId) {
-        stopRepeatingTask();
+        startRepeatingTask();
         return START_STICKY;
     }
 
     Runnable mHandlerTask =  new Runnable() {
         @Override
         public void run() {
-            long currentTimestampInSeconds = System.currentTimeMillis() / CustomDate.SEC;
-            if (currentTimestampInSeconds % 60 == 0) {
-                sendBroadCasts();
+            long currentTimestampInSeconds = System.currentTimeMillis();
+            if (currentTimestampInSeconds % CustomDate.MINS == 0) {
+                sendMail();
             }
 
             mHandler.postDelayed(mHandlerTask, 1000);
@@ -52,6 +53,11 @@ public class TrackingNotifierService extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         return null;
+    }
+
+    private void sendMail() {
+        SendMailInvoker sendMailInvoker = new SendMailInvoker(this);
+        sendMailInvoker.sendMail();
     }
 
     private void sendBroadCasts() {

@@ -1,9 +1,9 @@
 package mm.locationtracker.mailer;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.view.WindowManager;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
@@ -21,9 +21,6 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
-
-import mm.locationtracker.activity.MainActivity;
-import mm.locationtracker.utility.CustomToast;
 
 /**
  * Created by Pradeep Mahato 007 on 08-May-16.
@@ -62,7 +59,7 @@ public class GmailSMTPMailer {
 
         Multipart mp = new MimeMultipart();
         MimeBodyPart htmlPart = new MimeBodyPart();
-        htmlPart.setContent("Testing", "text/html");
+        htmlPart.setContent(messageBody, "text/html");
         mp.addBodyPart(htmlPart);
 
         //Attach the file
@@ -95,13 +92,24 @@ public class GmailSMTPMailer {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            progressDialog = ProgressDialog.show(context, "Please wait", "Sending mail", true, false);
+            try {
+                progressDialog = ProgressDialog.show(context, "Please wait", "Sending mail", true, false);
+            } catch (WindowManager.BadTokenException e) {
+                e.printStackTrace();
+            }
         }
 
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            progressDialog.dismiss();
+
+            try {
+                if (progressDialog != null) {
+                    progressDialog.dismiss();
+                }
+            } catch (WindowManager.BadTokenException e) {
+                e.printStackTrace();
+            }
         }
 
         @Override

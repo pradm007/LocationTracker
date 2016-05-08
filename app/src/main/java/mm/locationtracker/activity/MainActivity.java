@@ -4,34 +4,26 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.InputType;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Session;
-
 import mm.locationtracker.R;
-import mm.locationtracker.database.helper.DatableHandler;
-import mm.locationtracker.database.table.LocationTable;
-import mm.locationtracker.mailer.GmailSMTPMailer;
 import mm.locationtracker.service.GPSTrackerService;
 import mm.locationtracker.service.TrackingNotifierService;
 import mm.locationtracker.utility.ApplicationState;
 import mm.locationtracker.utility.CustomConstants;
-import mm.locationtracker.utility.CustomDate;
 import mm.locationtracker.utility.CustomToast;
-import mm.locationtracker.utility.KMLFileCreator;
+import mm.locationtracker.utility.DumpKMLFileInvoker;
+import mm.locationtracker.utility.SendMailInvoker;
 
+/**
+ * Created by Pradeep Mahato 007 on 07-May-16.
+ */
 public class MainActivity extends AppCompatActivity {
 
     GPSTrackerService gpsTrackerService;
@@ -81,7 +73,8 @@ public class MainActivity extends AppCompatActivity {
     BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-          sendMail();
+            SendMailInvoker sendMailInvoker = new SendMailInvoker(MainActivity.this);
+            sendMailInvoker.sendMail();
         }
     };
 
@@ -106,52 +99,19 @@ public class MainActivity extends AppCompatActivity {
     View.OnClickListener dumpKMLFileListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            dumpTheFile();
+            DumpKMLFileInvoker dumpKMLFileInvoker = new DumpKMLFileInvoker(MainActivity.this);
+            dumpKMLFileInvoker.dumpTheFile();
         }
     };
-
-    private String dumpTheFile() {
-        DatableHandler datableHandler =  new DatableHandler(getApplicationContext(), "LOCATION_COORDINATES");
-        ArrayList<LocationTable> locationTableArrayList =  datableHandler.getAllLocation();
-        String filePath = "";
-
-        if (locationTableArrayList.isEmpty()) {
-            CustomToast.showToast(getApplicationContext(), "No record found in DB !! :(");
-        } else {
-            filePath = KMLFileCreator.createKMLFile(locationTableArrayList);
-            boolean status = !filePath.isEmpty();
-
-            if (status) {
-                CustomToast.showToast(getApplicationContext(), "File creation successfull");
-            } else {
-                CustomToast.showToast(getApplicationContext(), "File creation failed");
-            }
-        }
-        return filePath;
-    }
 
     View.OnClickListener sendMailClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            sendMail();
+            SendMailInvoker sendMailInvoker = new SendMailInvoker(MainActivity.this);
+            sendMailInvoker.sendMail();
         }
     };
 
-    private void sendMail() {
-        String filePath = dumpTheFile();
-        if (!filePath.isEmpty()) {
-            GmailSMTPMailer gmailSMTPMailer = new GmailSMTPMailer("mmdevelopers9092@gmail.com", "whiteboard", getApplicationContext());
-            Session session = gmailSMTPMailer.createSessionObject();
-            try {
-                Message message = gmailSMTPMailer.createMessage("mmdevelopers9092@gmail.com", "Test 1 at " + CustomDate.getCurrentFormattedDate(), "Yo wassup", filePath, session);
-                gmailSMTPMailer.sendTheMail(message, MainActivity.this);
-            } catch (MessagingException e) {
-                e.printStackTrace();
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-        }
-    }
 
     View.OnClickListener submitPinClickListener = new View.OnClickListener() {
         @Override
