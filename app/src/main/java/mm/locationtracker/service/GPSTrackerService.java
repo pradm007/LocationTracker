@@ -69,7 +69,6 @@ public class GPSTrackerService extends Service implements LocationListener {
 
         if (latitude != -1.0 && longitude != -1.0) {
             String locationStr = "On LocationChanged Current location is \nLatitude : " + latitude + "\nLongitude : " + longitude;
-
             insertToDb(latitude, longitude);
 
             CustomToast.showToast(mContext, locationStr);

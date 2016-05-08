@@ -14,7 +14,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:text="@string/get_current_location"
-        android:visibility="visible" />
+        android:visibility="gone" />
 
     <Button
         android:id="@+id/location_dump_kml_file"
@@ -23,14 +23,15 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:text="@string/create_dump_file"
-        android:visibility="visible" />
+        android:visibility="gone" />
 
     <Button
         android:id="@+id/sendMail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:text="Send Mail" />
+        android:text="Send Mail"
+        android:visibility="gone" />
 
     <RelativeLayout
         android:id="@+id/valueContainer"
@@ -38,7 +39,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/sendMail"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp">
+        android:layout_marginTop="30dp"
+        android:visibility="gone">
 
         <LinearLayout
             android:id="@+id/minDisContainer"
@@ -105,7 +107,7 @@
         android:layout_centerInParent="true"
         android:gravity="center"
         android:orientation="horizontal"
-        android:visibility="gone">
+        android:visibility="visible">
 
 
         <EditText

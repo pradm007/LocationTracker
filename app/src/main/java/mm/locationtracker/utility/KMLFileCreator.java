@@ -44,7 +44,7 @@ public class KMLFileCreator {
 
         String locationCordinates = "";
 
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < locationTableArrayList.size(); i++) {
 
             kmlelementStart = "\t<Placemark>\n" +
                     "\t<name>" + i + "</name>\n" +

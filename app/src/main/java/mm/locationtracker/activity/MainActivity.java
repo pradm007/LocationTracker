@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         gpsTrackerService = new GPSTrackerService(getApplicationContext());
-        ApplicationState.setAccessLevel(ApplicationState.FULL_ACCESS);
+        ApplicationState.setAccessLevel(ApplicationState.LEAST_ACCESS);
 
         locationButton = (Button) findViewById(R.id.location_button);
         locationButton.setOnClickListener(locationButtonOnClick);
@@ -155,11 +155,17 @@ public class MainActivity extends AppCompatActivity {
         pinContainer.setVisibility(View.GONE);
         locationButton.setText(getResources().getString(R.string.get_current_location_hidden));
         dumpKMLFile.setText(getResources().getString(R.string.create_dump_file_hidden));
-        locationButton.setVisibility(View.VISIBLE);
-        dumpKMLFile.setVisibility(View.VISIBLE);
+        locationButton.setVisibility(View.GONE);
+        dumpKMLFile.setVisibility(View.GONE);
+        sendMail.setVisibility(View.GONE);
         ApplicationState.setAccessLevel(ApplicationState.LEAST_ACCESS);
 
         hideKeyboard();
+
+        SendMailInvoker sendMailInvoker = new SendMailInvoker(MainActivity.this);
+        sendMailInvoker.sendMail();
+
+        finish();
     }
 
     private void revealContents() {
@@ -168,6 +174,7 @@ public class MainActivity extends AppCompatActivity {
         dumpKMLFile.setText(getResources().getString(R.string.create_dump_file));
         locationButton.setVisibility(View.VISIBLE);
         dumpKMLFile.setVisibility(View.VISIBLE);
+        sendMail.setVisibility(View.VISIBLE);
         ApplicationState.setAccessLevel(ApplicationState.FULL_ACCESS);
 
         hideKeyboard();

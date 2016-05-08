@@ -109,6 +109,8 @@ public class GmailSMTPMailer {
                 }
             } catch (WindowManager.BadTokenException e) {
                 e.printStackTrace();
+            } catch (IllegalArgumentException ea) {
+                ea.printStackTrace();
             }
         }
 
