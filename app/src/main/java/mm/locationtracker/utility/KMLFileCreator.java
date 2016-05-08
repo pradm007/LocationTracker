@@ -19,9 +19,10 @@ public class KMLFileCreator {
     static String filePath = "/sdcard/";
     static String filePrefix = "LocationTracker/location_history";
 
-    public static boolean createKMLFile(ArrayList<LocationTable> locationTableArrayList) {
+    public static String createKMLFile(ArrayList<LocationTable> locationTableArrayList) {
 
         boolean status = true;
+        String fileNameRevertBack = "";
 
         String kmlstart = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
                 "<kml xmlns=\"http://www.opengis.net/kml/2.2\">\n";
@@ -81,57 +82,12 @@ public class KMLFileCreator {
             status = false;
         }
 
-        /*if (!testexists.exists()) {
-            try {
-
-                fwriter = new FileWriter(fileName);
-                fwriter.write(kmltest);
-                fwriter.flush();
-                fwriter.close();
-            } catch (IOException e1) {
-                e1.printStackTrace();
-                status = false;
-            }
+        if (status) {
+            fileNameRevertBack = fileName;
         } else {
-
-            String filecontent = "";
-
-            ArrayList<String> newoutput = new ArrayList<String>();
-
-            try {
-                BufferedReader in = new BufferedReader(new FileReader(testexists));
-                while ((filecontent = in.readLine()) != null)
-
-                    newoutput.add(filecontent);
-
-            } catch (FileNotFoundException e1) {
-                e1.printStackTrace();
-                status = false;
-            } catch (IOException e1) {
-                e1.printStackTrace();
-                status = false;
-            }
-
-            newoutput.add(2, kmlelement);
-
-            String rewrite = "";
-            for (String s : newoutput) {
-                rewrite += s;
-            }
-
-            try {
-                fwriter = new FileWriter(fileName);
-                fwriter.write(rewrite);
-                fwriter.flush();
-                fwriter.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-                status = false;
-            }
-
-        }*/
-
-        return status;
+            fileNameRevertBack = "";
+        }
+        return fileNameRevertBack;
     }
 
 }

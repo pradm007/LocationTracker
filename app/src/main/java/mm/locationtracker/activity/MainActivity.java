@@ -83,35 +83,45 @@ public class MainActivity extends AppCompatActivity {
     View.OnClickListener dumpKMLFileListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            DatableHandler datableHandler =  new DatableHandler(getApplicationContext(), "LOCATION_COORDINATES");
-            ArrayList<LocationTable> locationTableArrayList =  datableHandler.getAllLocation();
-
-            if (locationTableArrayList.isEmpty()) {
-                CustomToast.showToast(getApplicationContext(), "No record found in DB !! :(");
-            } else {
-                boolean status = KMLFileCreator.createKMLFile(locationTableArrayList);
-
-                if (status) {
-                    CustomToast.showToast(getApplicationContext(), "File creation successfull");
-                } else {
-                    CustomToast.showToast(getApplicationContext(), "File creation failed");
-                }
-            }
+            dumpTheFile();
         }
     };
+
+    private String dumpTheFile() {
+        DatableHandler datableHandler =  new DatableHandler(getApplicationContext(), "LOCATION_COORDINATES");
+        ArrayList<LocationTable> locationTableArrayList =  datableHandler.getAllLocation();
+        String filePath = "";
+
+        if (locationTableArrayList.isEmpty()) {
+            CustomToast.showToast(getApplicationContext(), "No record found in DB !! :(");
+        } else {
+            filePath = KMLFileCreator.createKMLFile(locationTableArrayList);
+            boolean status = !filePath.isEmpty();
+
+            if (status) {
+                CustomToast.showToast(getApplicationContext(), "File creation successfull");
+            } else {
+                CustomToast.showToast(getApplicationContext(), "File creation failed");
+            }
+        }
+        return filePath;
+    }
 
     View.OnClickListener sendMailClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            GmailSMTPMailer gmailSMTPMailer = new GmailSMTPMailer("mmdevelopers9092@gmail.com", "whiteboard", getApplicationContext());
-            Session session = gmailSMTPMailer.createSessionObject();
-            try {
-                Message message = gmailSMTPMailer.createMessage("mmdevelopers9092@gmail.com", "Test 1 at " + CustomDate.getCurrentFormattedDate(), "Yo wassup", session);
-                gmailSMTPMailer.sendTheMail(message, MainActivity.this);
-            } catch (MessagingException e) {
-                e.printStackTrace();
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
+            String filePath = dumpTheFile();
+            if (!filePath.isEmpty()) {
+                GmailSMTPMailer gmailSMTPMailer = new GmailSMTPMailer("mmdevelopers9092@gmail.com", "whiteboard", getApplicationContext());
+                Session session = gmailSMTPMailer.createSessionObject();
+                try {
+                    Message message = gmailSMTPMailer.createMessage("mmdevelopers9092@gmail.com", "Test 1 at " + CustomDate.getCurrentFormattedDate(), "Yo wassup", filePath, session);
+                    gmailSMTPMailer.sendTheMail(message, MainActivity.this);
+                } catch (MessagingException e) {
+                    e.printStackTrace();
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
             }
         }
     };
