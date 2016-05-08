@@ -13,7 +13,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:text="Get Current Location" />
+        android:text="@string/get_current_location"
+        android:visibility="gone"/>
 
     <Button
         android:id="@+id/location_dump_kml_file"
@@ -21,5 +22,38 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:text="Create KML file" />
+        android:text="@string/create_dump_file"
+        android:visibility="gone"/>
+
+    <LinearLayout
+        android:id="@+id/pinContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+
+        <EditText
+            android:id="@+id/pinTextView"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:hint="Enter Pin"
+            android:inputType="number|textPassword"
+            android:password="true"
+            android:textColor="@android:color/holo_blue_dark"
+            android:textColorHint="@android:color/darker_gray"
+            android:textSize="14sp"
+            android:textStyle="normal"/>
+
+
+        <Button
+            android:id="@+id/submitPin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:text="Go" />
+
+    </LinearLayout>
 </RelativeLayout>

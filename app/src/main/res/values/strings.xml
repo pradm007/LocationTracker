@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">LocationTracker</string>
+
+    <string name="correct_pin">7792</string>
+    <string name="create_dump_file">Create KML file</string>
+    <string name="get_current_location">Get Current Location</string>
+    <string name="create_dump_file_hidden">****** *** ****</string>
+    <string name="get_current_location_hidden">*** ******* ********</string>
 </resources>
