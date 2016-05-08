@@ -52,13 +52,14 @@ public class KMLFileCreator {
                     "\t<LineString>\n" + "\t\t<coordinates>";
 
             LocationTable locationTable = locationTableArrayList.get(i);
-            locationCordinates = locationTable.getLatitude() + "," + locationTable.getLongitude() + "," + 0;
+            locationCordinates = locationTable.getLongitude() + "," + locationTable.getLatitude() + "," + 0;
 
             if (i < locationTableArrayList.size() - 2) {
                 locationCordinates += " ";
             }
 
             kmlelement += kmlelementStart + locationCordinates + "</coordinates>\n" +
+                    "\t\t<tessellate>1</tessellate>\n" +
                     "\t</LineString>\n" +
                     "\t</Placemark>\n";
 
