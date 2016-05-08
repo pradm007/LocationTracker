@@ -5,16 +5,22 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.util.Properties;
 
+import javax.activation.DataHandler;
+import javax.activation.FileDataSource;
 import javax.mail.Message;
 import javax.mail.MessagingException;
+import javax.mail.Multipart;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 
 import mm.locationtracker.activity.MainActivity;
 import mm.locationtracker.utility.CustomToast;
@@ -47,12 +53,30 @@ public class GmailSMTPMailer {
         });
     }
 
-    public Message createMessage(String email, String subject, String messageBody, Session session) throws MessagingException, UnsupportedEncodingException {
+    public Message createMessage(String email, String subject, String messageBody, String filePath, Session session) throws MessagingException, UnsupportedEncodingException {
         Message message = new MimeMessage(session);
         message.setFrom(new InternetAddress("mmdevelopers9092@gmail.com", "MM test1"));
         message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
         message.setSubject(subject);
         message.setText(messageBody);
+
+        Multipart mp = new MimeMultipart();
+        MimeBodyPart htmlPart = new MimeBodyPart();
+        htmlPart.setContent("Testing", "text/html");
+        mp.addBodyPart(htmlPart);
+
+        //Attach the file
+        if (filePath != null && !filePath.isEmpty()) {
+            File kmlFile = new File(filePath);
+            MimeBodyPart messageBodyPart = new MimeBodyPart();
+            FileDataSource fileDataSource = new FileDataSource(kmlFile);
+            messageBodyPart.setDataHandler(new DataHandler(fileDataSource));
+            messageBodyPart.setFileName(kmlFile.getName());
+            mp.addBodyPart(messageBodyPart);
+
+            message.setContent(mp);
+        }
+
         return message;
     }
 
