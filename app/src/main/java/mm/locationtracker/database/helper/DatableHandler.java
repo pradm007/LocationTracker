@@ -74,6 +74,12 @@ public class DatableHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    public void deleteDb() {
+        SQLiteDatabase  db = this.getWritableDatabase();
+
+        onUpgrade(db, 0, 1);
+    }
+
     public LocationTable getLocation(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
 

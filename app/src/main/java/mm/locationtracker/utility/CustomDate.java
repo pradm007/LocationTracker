@@ -23,4 +23,23 @@ public class CustomDate {
         return formattedDate;
     }
 
+    public static String getCurrentFormattedDateMinutesValue() {
+        Calendar c = Calendar.getInstance();
+
+        SimpleDateFormat df = new SimpleDateFormat("mm");
+        String formattedDate = df.format(c.getTime());
+
+        return formattedDate;
+    }
+
+
+    public static String getCurrentFormattedDateHourValue() {
+        Calendar c = Calendar.getInstance();
+
+        SimpleDateFormat df = new SimpleDateFormat("HH");
+        String formattedDate = df.format(c.getTime());
+
+        return formattedDate;
+    }
+
 }

