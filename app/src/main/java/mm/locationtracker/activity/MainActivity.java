@@ -12,6 +12,7 @@ import mm.locationtracker.R;
 import mm.locationtracker.database.helper.DatableHandler;
 import mm.locationtracker.database.table.LocationTable;
 import mm.locationtracker.service.GPSTrackerService;
+import mm.locationtracker.utility.CustomToast;
 import mm.locationtracker.utility.KMLFileCreator;
 
 public class MainActivity extends AppCompatActivity {
@@ -43,10 +44,10 @@ public class MainActivity extends AppCompatActivity {
 
                 String locationStr = "Current location is \nLatitude : " + latitude + "\nLongitude : " + longitude;
 
-                Toast.makeText(getApplicationContext(), locationStr, Toast.LENGTH_SHORT).show();
+                CustomToast.showToast(getApplicationContext(), locationStr);
             } else {
                 gpsTrackerService.showSettingsAlert();
-                Toast.makeText(getApplicationContext(), "Cannot get location !! :(", Toast.LENGTH_SHORT).show();
+                CustomToast.showToast(getApplicationContext(), "Cannot get location");
             }
         }
     };
@@ -58,14 +59,14 @@ public class MainActivity extends AppCompatActivity {
             ArrayList<LocationTable> locationTableArrayList =  datableHandler.getAllLocation();
 
             if (locationTableArrayList.isEmpty()) {
-                Toast.makeText(getApplicationContext(), "No record found in DB !! :(", Toast.LENGTH_SHORT).show();
+                CustomToast.showToast(getApplicationContext(), "No record found in DB !! :(");
             } else {
                 boolean status = KMLFileCreator.createKMLFile(locationTableArrayList);
 
                 if (status) {
-                    Toast.makeText(getApplicationContext(), "File creation successfull", Toast.LENGTH_SHORT).show();
+                    CustomToast.showToast(getApplicationContext(), "File creation successfull");
                 } else {
-                    Toast.makeText(getApplicationContext(), "File creation failed", Toast.LENGTH_SHORT).show();
+                    CustomToast.showToast(getApplicationContext(), "File creation failed");
                 }
             }
         }

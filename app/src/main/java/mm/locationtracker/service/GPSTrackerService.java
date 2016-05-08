@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import mm.locationtracker.database.helper.DatableHandler;
 import mm.locationtracker.database.table.LocationTable;
+import mm.locationtracker.utility.CustomToast;
 
 import static android.location.LocationManager.*;
 
@@ -71,7 +72,7 @@ public class GPSTrackerService extends Service implements LocationListener {
 
             insertToDb(latitude, longitude);
 
-            Toast.makeText(mContext, locationStr, Toast.LENGTH_SHORT).show();
+            CustomToast.showToast(mContext, locationStr);
         }
     }
 
