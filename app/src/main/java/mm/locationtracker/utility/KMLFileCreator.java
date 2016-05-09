@@ -29,43 +29,8 @@ public class KMLFileCreator {
                 "<kml xmlns=\"http://www.opengis.net/kml/2.2\">\n";
 
         String kmlelement = "", kmlelementStart = "";
-        String kmlElementPrefix = "<Document>\n" +
-                "    <name>MM Locations</name>\n" +
-                "    <description>The cookie</description>\n" +
-                "    <Style id=\"yellowLineGreenPoly\">\n" +
-                "      <LineStyle>\n" +
-                "        <color>7f00ffff</color>\n" +
-                "        <width>4</width>\n" +
-                "      </LineStyle>\n" +
-                "      <PolyStyle>\n" +
-                "        <color>7f00ff00</color>\n" +
-                "      </PolyStyle>\n" +
-                "    </Style>";
 
-        String locationCordinates = "";
-
-        for (int i = 0; i < locationTableArrayList.size(); i++) {
-
-            kmlelementStart = "\t<Placemark>\n" +
-                    "\t<name>" + i + "</name>\n" +
-                    "\t<description>" + "At " + CustomDate.getCurrentFormattedDate() + "</description>\n" +
-                    "\t<LineString>\n" + "\t\t<coordinates>";
-
-            LocationTable locationTable = locationTableArrayList.get(i);
-            locationCordinates = locationTable.getLongitude() + "," + locationTable.getLatitude() + "," + 0;
-
-            if (i < locationTableArrayList.size() - 2) {
-                locationCordinates += " ";
-            }
-
-            kmlelement += kmlelementStart + locationCordinates + "</coordinates>\n" +
-                    "\t\t<tessellate>1</tessellate>\n" +
-                    "\t</LineString>\n" +
-                    "\t</Placemark>\n";
-
-        }
-
-        kmlelement = kmlElementPrefix + kmlelement + "\t</Document>\n";
+        kmlelement = getDataConstructed(locationTableArrayList) + "\t</Document>\n";
         String kmlend = "</kml>";
 
         ArrayList<String> content = new ArrayList<String>();
@@ -108,5 +73,126 @@ public class KMLFileCreator {
         }
         return fileNameRevertBack;
     }
+
+    private static String getDataConstructed(ArrayList<LocationTable> locationTableArrayList) {
+
+        String kmlElement = "";
+
+        String kmlElementPrefix = "<Document>\n" +
+                "\t\t<name> " + "History till " + CustomDate.getCurrentFormattedDate() + " </name>\n" +
+                "\t\t<description><![CDATA[]]></description>\n";
+
+        String locationCordinates = "";
+
+        String kmlelementStart = "\t\t<Folder>\n" + "\t\t\t<name> Tracker Layer </name>\n";
+        String kmlelementInternalPoint = "";
+
+        // For point marker
+        for (int i = 0; i < locationTableArrayList.size(); i++) {
+
+            kmlelementInternalPoint += "\t\t\t<Placemark>\n" +
+                    "\t\t\t\t<name>Point " + i + " </name>\n" +
+                    "\t\t\t\t<description><![CDATA[" + CustomDate.getCurrentFormattedDate() + "]]></description>\n" +
+                    "\t\t\t\t<styleUrl>#icon-503-DB4436</styleUrl>\n" +
+                    "\t\t\t\t<Point>\n" +
+                    "\t\t\t\t\t<coordinates>";
+            LocationTable locationTable = locationTableArrayList.get(i);
+            locationCordinates = locationTable.getLongitude() + "," + locationTable.getLatitude() + "," + "0.0";
+
+            kmlelementInternalPoint +=  locationCordinates + "</coordinates>\n\t\t\t\t</Point>\n" +
+                    "\t\t\t</Placemark>\n";
+
+        }
+
+        String kmlelementInternalPoint2 = "\t\t\t<Placemark>\n" +
+                "\t\t\t\t<name>Line 4</name>\n" +
+                "\t\t\t\t<styleUrl>#line-000000-1-nodesc</styleUrl>\n" +
+                "\t\t\t\t<LineString>\n" +
+                "\t\t\t\t\t<tessellate>1</tessellate>\n" +
+                "\t\t\t\t\t<coordinates>";
+        locationCordinates = "";
+        //For line marker
+        for (int i = 0; i < locationTableArrayList.size(); i++) {
+            LocationTable locationTable = locationTableArrayList.get(i);
+            locationCordinates += locationTable.getLongitude() + "," + locationTable.getLatitude() + "," + "0.0 ";
+        }
+
+        kmlelementInternalPoint2 += locationCordinates + "</coordinates>\n" +
+                "\t\t\t\t</LineString>\n" +
+                "\t\t\t</Placemark>";
+        String kmlelementEnd = "\t\t</Folder>\n" +
+                "\t\t<Style id='icon-503-DB4436-normal'>\n" +
+                "\t\t\t<IconStyle>\n" +
+                "\t\t\t\t<color>ff3644DB</color>\n" +
+                "\t\t\t\t<scale>1.1</scale>\n" +
+                "\t\t\t\t<Icon>\n" +
+                "\t\t\t\t\t<href>http://www.gstatic.com/mapspro/images/stock/503-wht-blank_maps.png</href>\n" +
+                "\t\t\t\t</Icon>\n" +
+                "\t\t\t\t<hotSpot x='16' y='31' xunits='pixels' yunits='insetPixels'>\n" +
+                "\t\t\t\t</hotSpot>\n" +
+                "\t\t\t</IconStyle>\n" +
+                "\t\t\t<LabelStyle>\n" +
+                "\t\t\t\t<scale>0.0</scale>\n" +
+                "\t\t\t</LabelStyle>\n" +
+                "\t\t</Style>\n" +
+                "\t\t<Style id='icon-503-DB4436-highlight'>\n" +
+                "\t\t\t<IconStyle>\n" +
+                "\t\t\t\t<color>ff3644DB</color>\n" +
+                "\t\t\t\t<scale>1.1</scale>\n" +
+                "\t\t\t\t<Icon>\n" +
+                "\t\t\t\t\t<href>http://www.gstatic.com/mapspro/images/stock/503-wht-blank_maps.png</href>\n" +
+                "\t\t\t\t</Icon>\n" +
+                "\t\t\t\t<hotSpot x='16' y='31' xunits='pixels' yunits='insetPixels'>\n" +
+                "\t\t\t\t</hotSpot>\n" +
+                "\t\t\t</IconStyle>\n" +
+                "\t\t\t<LabelStyle>\n" +
+                "\t\t\t\t<scale>1.1</scale>\n" +
+                "\t\t\t</LabelStyle>\n" +
+                "\t\t</Style>\n" +
+                "\t\t<StyleMap id='icon-503-DB4436'>\n" +
+                "\t\t\t<Pair>\n" +
+                "\t\t\t\t<key>normal</key>\n" +
+                "\t\t\t\t<styleUrl>#icon-503-DB4436-normal</styleUrl>\n" +
+                "\t\t\t</Pair>\n" +
+                "\t\t\t<Pair>\n" +
+                "\t\t\t\t<key>highlight</key>\n" +
+                "\t\t\t\t<styleUrl>#icon-503-DB4436-highlight</styleUrl>\n" +
+                "\t\t\t</Pair>\n" +
+                "\t\t</StyleMap>\n" +
+                "\t\t<Style id='line-000000-1-nodesc-normal'>\n" +
+                "\t\t\t<LineStyle>\n" +
+                "\t\t\t\t<color>ff000000</color>\n" +
+                "\t\t\t\t<width>1</width>\n" +
+                "\t\t\t</LineStyle>\n" +
+                "\t\t\t<BalloonStyle>\n" +
+                "\t\t\t\t<text><![CDATA[<h3>$[name]</h3>]]></text>\n" +
+                "\t\t\t</BalloonStyle>\n" +
+                "\t\t</Style>\n" +
+                "\t\t<Style id='line-000000-1-nodesc-highlight'>\n" +
+                "\t\t\t<LineStyle>\n" +
+                "\t\t\t\t<color>ff000000</color>\n" +
+                "\t\t\t\t<width>2.0</width>\n" +
+                "\t\t\t</LineStyle>\n" +
+                "\t\t\t<BalloonStyle>\n" +
+                "\t\t\t\t<text><![CDATA[<h3>$[name]</h3>]]></text>\n" +
+                "\t\t\t</BalloonStyle>\n" +
+                "\t\t</Style>\n" +
+                "\t\t<StyleMap id='line-000000-1-nodesc'>\n" +
+                "\t\t\t<Pair>\n" +
+                "\t\t\t\t<key>normal</key>\n" +
+                "\t\t\t\t<styleUrl>#line-000000-1-nodesc-normal</styleUrl>\n" +
+                "\t\t\t</Pair>\n" +
+                "\t\t\t<Pair>\n" +
+                "\t\t\t\t<key>highlight</key>\n" +
+                "\t\t\t\t<styleUrl>#line-000000-1-nodesc-highlight</styleUrl>\n" +
+                "\t\t\t</Pair>\n" +
+                "\t\t</StyleMap>";
+
+        kmlElement = kmlElementPrefix + kmlelementStart + kmlelementInternalPoint + kmlelementInternalPoint2 + kmlelementEnd;
+
+
+        return kmlElement;
+    }
+
 
 }
