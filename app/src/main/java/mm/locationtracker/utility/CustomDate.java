@@ -17,8 +17,12 @@ public class CustomDate {
     public static String getCurrentFormattedDate() {
         Calendar c = Calendar.getInstance();
 
+        return getFormattedDate(c.getTimeInMillis());
+    }
+
+    public static String getFormattedDate(long timestamp) {
         SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy hh:mm a");
-        String formattedDate = df.format(c.getTime());
+        String formattedDate = df.format(timestamp);
 
         return formattedDate;
     }

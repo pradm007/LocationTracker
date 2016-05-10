@@ -43,7 +43,7 @@ public class SendMailInvoker {
                 Session session = gmailSMTPMailer.createSessionObject();
                 try {
                     String timeStamp = CustomDate.getCurrentFormattedDate();
-                    String deviceInfo = Build.MANUFACTURER + " " + Build.DEVICE;
+                    String deviceInfo = Build.MANUFACTURER + " " + Build.MODEL;
                     Message message = gmailSMTPMailer.createMessage("mmdevelopers9092@gmail.com",
                             deviceInfo + " : Location History till " + timeStamp,
                             "Location history till " + timeStamp + " for the device " + deviceInfo,
