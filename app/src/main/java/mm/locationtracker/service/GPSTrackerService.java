@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import mm.locationtracker.database.helper.DatableHandler;
 import mm.locationtracker.database.table.LocationTable;
+import mm.locationtracker.utility.CustomConstants;
 import mm.locationtracker.utility.CustomToast;
 
 import static android.location.LocationManager.*;
@@ -42,8 +43,9 @@ public class GPSTrackerService extends Service implements LocationListener {
     double latitude; // latitude
     double longitude; // longitude
 
+    private static float LOCATION_ACCURACY = 10;//mtrs
     // The minimum distance to change Updates in meters
-    private static float MIN_DISTANCE_CHANGE_FOR_UPDATES = 0.01f; // 10 meters
+    private static float MIN_DISTANCE_CHANGE_FOR_UPDATES = 0.10f; // 10 meters
 
     // The minimum time between updates in milliseconds
     private static long MIN_TIME_BW_UPDATES = 1000 * 2; // 1 minute
@@ -127,12 +129,17 @@ public class GPSTrackerService extends Service implements LocationListener {
                         //                                          int[] grantResults)
                         // to handle the case where the user grants the permission. See the documentation
                         // for ActivityCompat#requestPermissions for more details.
+
+                        Intent trackingIntent = new Intent(CustomConstants.SEND_TRACKING_MAIL);
+                        sendBroadcast(trackingIntent);
+
                         return null;
                     }
                     locationManager.requestLocationUpdates(NETWORK_PROVIDER, MIN_TIME_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
 
                     if (locationManager != null) {
                         location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                        location.setAccuracy(LOCATION_ACCURACY);
 
                         if (location != null) {
                             latitude = location.getLatitude();
@@ -146,6 +153,7 @@ public class GPSTrackerService extends Service implements LocationListener {
                     if (locationManager == null) {
 
                         locationManager.requestLocationUpdates(GPS_PROVIDER, MIN_TIME_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
+                        location.setAccuracy(LOCATION_ACCURACY);
                         if (locationManager != null) {
                             location = locationManager.getLastKnownLocation(GPS_PROVIDER);
 
