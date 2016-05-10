@@ -33,6 +33,36 @@
         android:text="Send Mail"
         android:visibility="gone" />
 
+    <Button
+        android:id="@+id/hideMe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/sendMail"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:text="Hide Me !!"
+        android:visibility="gone"/>
+
+    <Button
+        android:id="@+id/sendSMS"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/hideMe"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:text="Send SMS"
+        android:visibility="gone"/>
+
+    <Button
+        android:id="@+id/requestAccess"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/sendSMS"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:text="Request Access"
+        android:visibility="gone" />
+
     <RelativeLayout
         android:id="@+id/valueContainer"
         android:layout_width="wrap_content"
