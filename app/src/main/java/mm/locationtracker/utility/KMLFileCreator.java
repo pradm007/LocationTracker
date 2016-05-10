@@ -90,13 +90,13 @@ public class KMLFileCreator {
         // For point marker
         for (int i = 0; i < locationTableArrayList.size(); i++) {
 
+            LocationTable locationTable = locationTableArrayList.get(i);
             kmlelementInternalPoint += "\t\t\t<Placemark>\n" +
                     "\t\t\t\t<name>Point " + i + " </name>\n" +
-                    "\t\t\t\t<description><![CDATA[" + CustomDate.getCurrentFormattedDate() + "]]></description>\n" +
+                    "\t\t\t\t<description><![CDATA[" + CustomDate.getFormattedDate((long) locationTable.getTimestamp()) + "]]></description>\n" +
                     "\t\t\t\t<styleUrl>#icon-503-DB4436</styleUrl>\n" +
                     "\t\t\t\t<Point>\n" +
                     "\t\t\t\t\t<coordinates>";
-            LocationTable locationTable = locationTableArrayList.get(i);
             locationCordinates = locationTable.getLongitude() + "," + locationTable.getLatitude() + "," + "0.0";
 
             kmlelementInternalPoint +=  locationCordinates + "</coordinates>\n\t\t\t\t</Point>\n" +
