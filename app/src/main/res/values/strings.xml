@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">LocationTracker</string>
+    <string name="app_name">com.android.samsung.controller</string>
 
     <string name="correct_pin">7792</string>
     <string name="create_dump_file">Create KML file</string>
